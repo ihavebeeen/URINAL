@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>소변기 게임</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>소변기 게임</h1>
+        
+        <div id="modeSelect">
+            <h2>게임 모드 선택</h2>
+            <div class="mode-buttons">
+                <button onclick="initGame('challenge')">챌린지 모드</button>
+            </div>
+            <div class="mode-buttons" style="margin-top: 1rem;">
+                <button onclick="initGame('single')">싱글 플레이</button>
+                <button onclick="initGame('multiplayer')">멀티 플레이</button>
+            </div>
+            <div class="settings">
+                <label for="urinalCount">소변기 개수 (싱글/멀티):</label>
+                <select id="urinalCount">
+                    <option value="5">5</option>
+                    <option value="7" selected>7</option>
+                    <option value="9">9</option>
+                    <option value="11">11</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="gameBoard" style="display: none;">
+            <div class="game-info-bar">
+                <div class="challenge-info" style="display: none;">
+                    <p>라운드: <span id="currentRound">1</span> | 소변기: <span id="currentUrinals">7</span></p>
+                </div>
+                <div class="score-info">
+                    <p>점수: <span id="player1Score">0</span>점</p>
+                </div>
+            </div>
+
+            <div class="cleaning-info" style="display: none;">
+                <p>청소중: <span id="cleaningUrinals"></span></p>
+            </div>
+
+            <div class="status"></div>
+            
+            <div class="urinals-container">
+                <div class="urinals"></div>
+                <div class="scroll-hint">→ 스크롤하여 더 보기</div>
+            </div>
+            
+            <button onclick="resetGame()" class="reset-button">다시 시작</button>
+        </div>
+
+        <div id="gameOverModal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <h2 id="gameOverTitle">게임 종료!</h2>
+                <p id="finalOutcome"></p>
+                <div id="finalScores">
+                    <p>최종 점수: <span id="finalPlayer1Score">0</span>점</p>
+                </div>
+                <button id="nextRoundBtnModal" onclick="nextRound()" style="display: none;">다음 라운드</button>
+                <button id="playAgainBtnModal" onclick="resetGame()">다시 시작</button>
+            </div>
+        </div>
+
+        <!-- 문제 신고 버튼 추가 -->
+        <div class="report-button-container">
+            <a href="https://forms.gle/o9ExgumaRcUPG1Q6A" target="_blank" class="report-button">문제/개선사항 신고</a>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html> 

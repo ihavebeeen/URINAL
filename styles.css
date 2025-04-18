@@ -1,0 +1,396 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    background-color: #f0f2f5;
+    color: #333;
+}
+
+.container {
+    max-width: 100%;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #1a73e8;
+    margin-bottom: 2rem;
+}
+
+h2 {
+    color: #333;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+#modeSelect {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.mode-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.settings {
+    margin: 1rem 0;
+}
+
+button {
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    background-color: #1a73e8;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #1557b0;
+}
+
+.reset-button {
+    margin-top: 1rem;
+    background-color: #dc3545;
+}
+
+.reset-button:hover {
+    background-color: #bb2d3b;
+}
+
+select {
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin: 0 0.5rem;
+}
+
+.urinals-container {
+    width: 100%;
+    overflow-x: auto;
+    padding: 3rem 0 2rem 0;
+    margin: 2rem 0;
+    position: relative;
+}
+
+.urinals-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.urinals-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.urinals-container::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+.urinals-container::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.urinals {
+    display: flex;
+    justify-content: flex-start;
+    gap: 20px;
+    margin: 0;
+    padding: 0 2rem;
+    min-width: min-content;
+    position: relative;
+}
+
+.urinals::before {
+    content: '';
+    position: absolute;
+    top: -15px;
+    left: 2rem;
+    right: 2rem;
+    height: 6px;
+    background-color: #666;
+    border-radius: 3px;
+}
+
+.urinal {
+    width: 120px;
+    height: 160px;
+    border: none;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    flex-shrink: 0;
+    position: relative;
+    background: url('BASIC.png') no-repeat center center;
+    background-size: contain;
+}
+
+.urinal-number {
+    position: absolute;
+    top: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1rem;
+    font-weight: bold;
+    color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(255, 255, 255, 0.6);
+    padding: 2px 6px;
+    border-radius: 4px;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.urinal.occupied-player .urinal-number,
+.urinal.occupied-ai .urinal-number,
+.urinal.cleaning .urinal-number {
+    color: rgba(255, 255, 255, 0.8);
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.urinal.occupied-player {
+    background-image: url('PLAYER.png');
+    border: none;
+}
+
+.urinal.occupied-ai {
+    background-image: url('AI.png');
+    border: none;
+}
+
+.urinal.cleaning {
+    background-image: url('FIX.png');
+    border: none;
+    cursor: not-allowed;
+    animation: cleaning 2s infinite;
+}
+
+@keyframes cleaning {
+    0% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.8; transform: scale(0.98); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+.urinal:hover:not(.occupied-player):not(.occupied-ai):not(.cleaning) {
+    transform: scale(1.05);
+    filter: brightness(1.1);
+}
+
+/* 스크롤 힌트 애니메이션 */
+.scroll-hint {
+    position: sticky;
+    float: right;
+    right: 1rem;
+    top: calc(50% - 1rem);
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    font-size: 0.8rem;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    pointer-events: none;
+    z-index: 10;
+    white-space: nowrap;
+}
+
+.urinals-container:hover .scroll-hint,
+.urinals-container.scrollable .scroll-hint {
+    opacity: 1;
+}
+
+.status {
+    text-align: center;
+    font-size: 1.2rem;
+    margin: 1rem 0;
+    padding: 1rem;
+    background-color: #e8f0fe;
+    border-radius: 5px;
+}
+
+.challenge-info, .cleaning-info {
+    text-align: center;
+    margin: 1rem 0;
+    padding: 1rem;
+    background-color: #fff3cd;
+    border-radius: 5px;
+    border: 1px solid #ffeeba;
+}
+
+#gameOver {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+#gameOver h2 {
+    color: #28a745;
+    margin-bottom: 1rem;
+}
+
+.game-info-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding: 0.8rem 1.2rem;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+}
+
+.challenge-info p {
+    margin: 0;
+    font-weight: normal;
+    color: #495057;
+    font-size: 0.95rem;
+}
+
+.challenge-info span {
+    font-weight: bold;
+    color: #1a73e8;
+    margin: 0 0.2rem;
+}
+
+.score-info {
+    text-align: right;
+}
+
+.score-info p {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #343a40;
+}
+
+.score-info span {
+    font-size: 1.3em;
+    font-weight: bold;
+    color: #dc3545;
+    margin-left: 0.5rem;
+}
+
+/* Modal Styles */
+.modal {
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 30px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 450px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    animation-name: animatetop;
+    animation-duration: 0.4s
+}
+
+@keyframes animatetop {
+    from {top: -300px; opacity: 0}
+    to {top: 0; opacity: 1}
+}
+
+#gameOverTitle {
+    color: #1a73e8;
+    margin-bottom: 1rem;
+}
+
+#finalOutcome {
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+    font-weight: bold;
+}
+
+#finalScores {
+    background-color: #f8f9fa;
+    padding: 1rem;
+    border-radius: 5px;
+    margin-bottom: 1.5rem;
+}
+
+#finalScores p {
+    margin: 0.5rem 0;
+    font-size: 1.1rem;
+}
+
+#finalScores span {
+    font-weight: bold;
+    color: #d93025;
+}
+
+.modal button {
+    margin: 0.5rem;
+}
+
+/* 문제 신고 버튼 스타일 */
+.report-button-container {
+    text-align: center;
+    margin-top: 2.5rem; /* 상단 여백 */
+    padding-top: 1rem;
+    border-top: 1px solid #eee; /* 구분선 */
+}
+
+.report-button {
+    display: inline-block;
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+    color: #5f6368; /* 버튼 색상 */
+    background-color: #f1f3f4; /* 버튼 배경 */
+    border: 1px solid #dadce0;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.report-button:hover {
+    background-color: #e8eaed;
+    border-color: #d2d5d9;
+    box-shadow: 0 1px 1px 0 rgba(66,133,244,0.15), 0 1px 3px 1px rgba(66,133,244,0.15);
+    color: #202124;
+}
+
+@media (max-width: 600px) {
+    .container {
+        padding: 1rem;
+        margin: 1rem;
+    }
+
+    .mode-buttons {
+        flex-direction: column;
+    }
+
+    .urinal {
+        width: 50px;
+        height: 70px;
+    }
+} 
