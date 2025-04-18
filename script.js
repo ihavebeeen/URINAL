@@ -362,17 +362,6 @@ function updateBoard() {
         // urinal.textContent = (i + 1).toString(); // span으로 대체
         board.appendChild(urinal);
     }
-    checkScrollability(); // 스크롤 힌트 업데이트
-}
-
-// 스크롤 가능 여부 확인 및 힌트 표시/숨김
-function checkScrollability() {
-    const container = document.querySelector('.urinals-container');
-    if (container.scrollWidth > container.clientWidth) {
-        container.classList.add('scrollable');
-    } else {
-        container.classList.remove('scrollable');
-    }
 }
 
 function updateStatus() {
@@ -389,12 +378,18 @@ function updateStatus() {
 }
 
 function checkGameOver() {
+    // 현재 플레이어가 둘 수 있는 유효한 수가 있는지 확인
     for (let i = 0; i < urinalCount; i++) {
-        if (gameBoard[i] === 0 && !cleaningUrinals.includes(i) && isValidMove(i)) {
-            return false;
+        if (gameBoard[i] === 0 && !cleaningUrinals.includes(i)) {
+            // 현재 플레이어가 해당 위치에 둘 수 있는지 확인
+            let canPlace = true;
+            if (i > 0 && gameBoard[i - 1] !== 0 && gameBoard[i - 1] !== currentPlayer) canPlace = false;
+            if (i < urinalCount - 1 && gameBoard[i + 1] !== 0 && gameBoard[i + 1] !== currentPlayer) canPlace = false;
+            
+            if (canPlace) return false; // 둘 수 있는 위치가 하나라도 있으면 게임 계속
         }
     }
-    return true;
+    return true; // 둘 수 있는 위치가 없으면 게임 종료
 }
 
 function showGameOver() {
